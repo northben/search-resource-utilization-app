@@ -1,0 +1,15 @@
+[views/search_resource_utilization]
+owner = admin
+version = 8.0.6
+modtime = 1604075774.933090000
+
+[savedsearches/search%20resource%20utilization%20base]
+access = read : [ * ], write : [ admin ]
+export = none
+owner = admin
+version = 8.0.6
+modtime = 1604075850.047286000
+
+[nav/default]
+version = 8.0.6
+modtime = 1604075909.555343000

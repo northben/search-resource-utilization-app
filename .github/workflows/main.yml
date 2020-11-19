@@ -2,8 +2,8 @@ name: Create Splunk application package
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - 'v*.*.*'
 
 jobs:
   build:
@@ -11,17 +11,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout master
+    - name: Checkout latest tag
       uses: actions/checkout@v2
-      with:
-        ref: master
 
-    - name: Archive Master Release
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+    - name: Create SPL tarball archive
       uses: juankaram/archive-action@v1.0.0
       with:
         args: tar -czvf search_resource_utilization_app.spl search_resource_utilization_app
 
-    - name: Save Master Release
+    - name: Upload SPL file for github release
       uses: xresloader/upload-to-github-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -29,5 +31,4 @@ jobs:
         file: "*.spl"
         tags: false
         draft: false
-        branches: "master"
-        verbose: true
+        tag_name: ${{ steps.get_version.outputs.VERSION }}
